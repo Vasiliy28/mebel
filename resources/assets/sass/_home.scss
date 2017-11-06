@@ -1,0 +1,105 @@
+
+.mebel-card {
+  max-width: 285px;
+  &__link-image {
+    height: 220px;
+  }
+  &__image {
+    height: inherit;
+  }
+}
+
+.how-work,
+.materials,
+.order-mebel {
+  background: url(../images/brick-wall.png) fixed;
+}
+
+.about-us,
+.mebels {
+  background: rgba($black, 0.2) url(../images/purty-wood.png) fixed;
+}
+
+.mebel-card {
+  border-color: #FFFFFF;
+  .card-body {
+    background: $teal;
+  }
+  &__link {
+    text-decoration: none;
+    color: #ffffff !important;
+    &:after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      background: $black;
+      width: 0;
+      height: 2px;
+      transition: all .1s ease-in;
+    }
+  }
+  &__link:hover {
+    text-decoration: none;
+    &:after {
+      width: 100%;
+      transition: all .15s ease-in;
+    }
+  }
+  &__link-image {
+    overflow: hidden;
+  }
+  &__image {
+    transition: all .15s ease-in;
+    &:hover {
+      transform: scale(1.05);
+      transition: all .15s ease-in;
+    }
+  }
+
+}
+
+.how-work-map {
+  &:before {
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    height: calc(100% - 20px);
+    margin-left: -1.5px;
+    content: '';
+    background-color: $teal;
+  }
+  li {
+    position: relative;
+  }
+  &__desc {
+    position: absolute;
+    top: 30%;
+    width: 30%;
+    height: 75%;
+    background: rgba($black, 0.1);
+    p{
+      font-size: larger;
+      line-height: 1.1;
+      margin-bottom: 0;
+      span{
+        vertical-align: super;
+      }
+    }
+
+  }
+  li:nth-child(odd) {
+    .how-work-map__desc {
+      left: 19%;
+      transform: translate(-25%, -20%);
+    }
+  }
+  li:nth-child(even) {
+    .how-work-map__desc {
+      right: 19%;
+      transform: translate(25%, -20%);
+    }
+  }
+}

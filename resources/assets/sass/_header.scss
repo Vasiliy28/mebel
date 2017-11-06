@@ -1,0 +1,94 @@
+$images: feature_1 feature_2 feature_3;
+.header-menu {
+  padding: 0;
+  &.sps {
+    background: rgba($dark, 0.45);
+  }
+  &.sps--abv {
+    transition: all 0.3s ease;
+    .nav-link {
+      padding: 1.75rem 0.5rem;
+    }
+
+  }
+  &.sps--blw {
+    background: rgba($dark, 0.9);
+  }
+  &__nav {
+    .nav-link {
+      padding: 1.15rem 0.5rem;
+      color: #ffffff;
+      transition: all 0.3s ease;
+      border-top: 2px solid transparent;
+      border-bottom: 2px solid transparent;
+      &.active{
+        background: $teal;
+      }
+      &:hover {
+        background: darken($teal, 10%);
+      }
+    }
+  }
+}
+
+.header-slider {
+  position: relative;
+  &__slide {
+    height: 100vh;
+    background-size: cover;
+    background: no-repeat fixed;
+    &:before{
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba($black, 0.3);
+    }
+  }
+  &__caption {
+    position: absolute;
+    width: 20%;
+    bottom: 24%;
+    background: rgba($gray-700, 0.7);
+    padding: 0.7rem 3rem 0.7rem 0.7rem;
+
+    p{
+      color: #ffffff;
+      font-size: 3em;
+      line-height: 1em;
+    }
+  }
+
+  &__title {
+    margin-top: 12%;
+    z-index: 1;
+    font-size: 4em;
+    line-height: 0.8em;
+  }
+  &__scroll-to{
+    bottom: 5%;
+    left: 50%;
+    color: $teal;
+    transform: translateX(-50%);
+    &:hover{
+     color: darken($teal, 7%)
+    }
+  }
+  &__indicators{
+    li {
+      cursor: pointer;
+      height: 7px;
+      width: 35px;
+      &.active,
+      &:hover{
+        background: $teal;
+      }
+    }
+  }
+  @each $image in $images {
+    $index: index($images, $image);
+    &__slide_#{$index} {
+      background-image:url("../images/header_slider/#{$image}.jpg");
+    }
+  }
+}

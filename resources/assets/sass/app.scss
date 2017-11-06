@@ -7,3 +7,54 @@
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+
+// Font Awesome
+@import "~font-awesome/scss/font-awesome";
+
+// Mebel DVD
+@import "admin";
+@import "header";
+@import "home";
+@import "ourwork";
+@import "ekko-lightbox";
+
+.min-h-100vh{
+  min-height: 100vh !important;
+}
+.h-100vh{
+  height: 100vh !important;
+}
+.text-teal{
+  color: $teal;
+}
+.border-teal{
+  border:2px solid $teal !important;
+}
+.header-background {
+  height: $height-header;
+  max-height: $height-header;
+  overflow: hidden;
+}
+.mebel-btn-teal {
+  background: $teal;
+  border: none;
+  color: #ffffff;
+  border-radius: 0;
+  font-weight: 600;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  &:hover{
+    background: darken($teal, 10%);
+  }
+}
+.mebel-nav-link{
+  transition: all 0.3s ease;
+  &:hover{
+    background-color: darken($teal, 10%);
+    color: #ffffff !important;
+  }
+}
+.bg-teal{
+  background-color: $teal !important;
+}

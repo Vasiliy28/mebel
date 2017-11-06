@@ -7,15 +7,18 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel</title>
+        <title>Mebel</title>
 
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     </head>
     <body>
-    @yield('content')
-        <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
+
+    @include('header')
+    @include('content')
+    @include('footer')
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
     </body>
 </html>

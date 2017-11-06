@@ -17,14 +17,14 @@ mix.autoload({
     'tether-shepherd': ['Shepherd'],
     'popper.js/dist/umd/popper.js': ['Popper']
     })
-    .react('resources/assets/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
+    .js('resources/assets/js/app.js', 'www/js')
+    .sass('resources/assets/sass/app.scss', 'www/css')
     .options({
         postCss: [
             require('precss')()
-        ]
+        ],
+        processCssUrls: false
     })
-    .sourceMaps()
     .browserSync({
         proxy: 'mebel-dvd.loc'
     })
