@@ -12,10 +12,10 @@ try {
     window.$ = window.jQuery = require('jquery');
     window.Tether = require('tether');
     window.Popper = require('popper.js/dist/umd/popper');
-    require('scrollpos-styler')
+    require('scrollpos-styler');
     require('bootstrap');
-    require('./ekko-lightbox')
-
+    require('./ekko-lightbox');
+    require('summernote/dist/summernote-bs4')
 } catch (e) {}
 
 /**

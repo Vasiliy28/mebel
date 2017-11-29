@@ -10,15 +10,14 @@
         <title>Mebel</title>
 
         <!-- Styles -->
-        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 
     </head>
     <body>
-
     @include('header')
     @include('content')
     @include('footer')
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
     </body>
 </html>

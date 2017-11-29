@@ -2,9 +2,9 @@
 
 @section('header')
     <div class="header-slider d-flex">
-                     <h1 class="header-slider__title position-absolute offset-2 text-light">
-                         <span>Мебель в Джанкое</span>
-                     </h1>
+        <h1 class="header-slider__title position-absolute offset-2 text-light">
+            <span>Мебель в Джанкое</span>
+        </h1>
         <div id="headerCarousel" class="carousel slide w-100" data-ride="carousel">
             <ol class="carousel-indicators header-slider__indicators">
                 <li data-target="#headerCarousel" data-slide-to="0" class="active"></li>
@@ -12,31 +12,33 @@
                 <li data-target="#headerCarousel" data-slide-to="2"></li>
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item header-slider__slide active">
-                    <img class="d-block w-100" src="{{asset('images/header_slider/feature_1.jpg')}}" alt="Third slide">
+                <div class="carousel-item header-slider__slide header-slider__slide_kitchen active">
                     <div class="header-slider__caption offset-2">
                         <p>Кухни</p>
-                        <a href="{{route('our_work',['type' => 'kitchens'])}}" class="btn btn-lg mebel-btn-teal" role="button"
+                        <a href="{{route('works',['type' => 'kitchens'])}}" class="btn btn-lg mebel-btn-teal"
+                           role="button"
                            aria-pressed="true">
                             Фото
                             <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
-                <div class="carousel-item header-slider__slide header-slider__slide_2">
+                <div class="carousel-item header-slider__slide header-slider__slide_bed">
                     <div class="header-slider__caption offset-2">
-                        <p>Детские</p>
-                        <a href="{{route('our_work',['type' => 'playroom'])}}" class="btn btn-lg mebel-btn-teal" role="button"
+                        <p>Кровати</p>
+                        <a href="{{route('works',['type' => 'beds'], true)}}" class="btn btn-lg mebel-btn-teal"
+                           role="button"
                            aria-pressed="true">
                             Фото
                             <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
                         </a>
                     </div>
                 </div>
-                <div class="carousel-item header-slider__slide header-slider__slide_3">
+                <div class="carousel-item header-slider__slide header-slider__slide_closet">
                     <div class="header-slider__caption offset-2">
                         <p>Шкафы-купе</p>
-                        <a href="{{route('our_work',['type' => 'wardrobes'])}}" class="btn btn-lg mebel-btn-teal" role="button"
+                        <a href="{{route('works',['type' => 'wardrobes'], TRUE)}}" class="btn btn-lg mebel-btn-teal"
+                           role="button"
                            aria-pressed="true">
                             Фото
                             <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
@@ -73,7 +75,8 @@
                             </span>
                             <div class="card-body mx-auto">
                                 <h4 class="card-title text-center">Дизайн</h4>
-                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere,
+                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                    elit. Facere,
                                     nesciunt.</p>
                             </div>
                         </div>
@@ -86,7 +89,8 @@
                             </span>
                             <div class="card-body mx-auto">
                                 <h4 class="card-title text-center">Изготовление</h4>
-                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere,
+                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                    elit. Facere,
                                     nesciunt.</p>
                             </div>
                         </div>
@@ -99,7 +103,8 @@
                             </span>
                             <div class="card-body mx-auto">
                                 <h4 class="card-title text-center">Доставка</h4>
-                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere,
+                                <p class="card-text text-center">Lorem ipsum dolor sit amet, consectetur adipisicing
+                                    elit. Facere,
                                     nesciunt.</p>
                             </div>
                         </div>
@@ -116,12 +121,14 @@
                     @foreach($data['type_works'] as $key => $item)
                         <div class="col-sm col-md-4">
                             <div class="card mb-4 mebel-card mx-auto rounded-0">
-                                <a href="{{route('our_work',['type' => $key], FALSE)}}" class="mebel-card__link-image">
-                                    <img class="card-img-top mebel-card__image" src="{{$item['preview']}}" alt="Card image cap">
+                                <a href="{{route('works',['type' => $key], FALSE)}}" class="mebel-card__link-image">
+                                    <img class="card-img-top mebel-card__image" src="{{$item['preview']}}"
+                                         alt="Card image cap">
                                 </a>
                                 <div class="card-body">
                                     <h4 class="card-title m-0 mebel-card__title">
-                                        <a href="{{route('our_work',['type' => $key])}}" class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
+                                        <a href="{{route('works',['type' => $key])}}"
+                                           class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
                                     </h4>
                                 </div>
                             </div>
@@ -139,14 +146,15 @@
                     @foreach($data['materials'] as $key => $item)
                         <div class="col-sm col-md-4">
                             <div class="card mb-4 mebel-card mx-auto rounded-0">
-                                <a href="{{route('material',['material' => $key], FALSE)}}"
+                                <a href="{{route('materials',['material' => $key], FALSE)}}"
                                    class="mebel-card__link-image">
                                     <img class="card-img-top mebel-card__image" src="{{$item['preview']}}"
                                          alt="Card image cap">
                                 </a>
                                 <div class="card-body">
                                     <h4 class="card-title m-0 mebel-card__title">
-                                        <a href="{{route('material',['material' => $key])}}" class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
+                                        <a href="{{route('materials',['material' => $key])}}"
+                                           class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
                                     </h4>
                                 </div>
                             </div>
@@ -208,7 +216,8 @@
                                 </span>
                                 <div class="how-work-map__desc pt-3 pl-2">
                                     <p class="text-dark font-weight-bold">Вы можете связаться с нами по телефону</p>
-                                    <p class=""><i class="fa fa-mobile fa-2x" aria-hidden="true"></i>    <span>+7 (978) 874-45-89</span></p>
+                                    <p class=""><i class="fa fa-mobile fa-2x" aria-hidden="true"></i> <span>+7 (978) 874-45-89</span>
+                                    </p>
                                 </div>
                             </li>
                             <li>
@@ -217,7 +226,8 @@
                                    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
                                 </span>
                                 <div class="how-work-map__desc pt-3 pl-2">
-                                    <p class="text-dark font-weight-bold">Мы приесжаем к Вам, снимаем замеры, и создаем дизайн</p>
+                                    <p class="text-dark font-weight-bold">Мы приесжаем к Вам, снимаем замеры, и создаем
+                                        дизайн</p>
                                 </div>
                             </li>
                             <li>
@@ -254,13 +264,13 @@
         </section>
     @endif
 
-    @if(true)
+    @if(TRUE)
         <section id="contact" class="contact">
             <div class="container pb-5 pt-3">
                 <h1 class="text-center p-4">Контакты</h1>
                 <div class="row">
                     <div class="col-6">
-                       <div class="bg-info mx-auto" style="height: 450px;width: 450px">Карта</div>
+                        <div class="bg-info mx-auto" style="height: 450px;width: 450px">Карта</div>
                     </div>
                     <div class="col-6">
                         <div class="row font-weight-bold">

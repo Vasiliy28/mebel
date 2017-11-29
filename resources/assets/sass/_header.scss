@@ -1,4 +1,4 @@
-$images: feature_1 feature_2 feature_3;
+$images: bed kitchen closet;
 .header-menu {
   padding: 0;
   &.sps {
@@ -35,22 +35,14 @@ $images: feature_1 feature_2 feature_3;
   position: relative;
   &__slide {
     height: 100vh;
+    background: no-repeat center center fixed;
     background-size: cover;
-    background: no-repeat fixed;
-    &:before{
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba($black, 0.3);
-    }
   }
   &__caption {
     position: absolute;
-    width: 20%;
     bottom: 24%;
     background: rgba($gray-700, 0.7);
-    padding: 0.7rem 3rem 0.7rem 0.7rem;
+    padding: 0.7rem 3rem 1rem 0.7rem;
 
     p{
       color: #ffffff;
@@ -86,8 +78,7 @@ $images: feature_1 feature_2 feature_3;
     }
   }
   @each $image in $images {
-    $index: index($images, $image);
-    &__slide_#{$index} {
+    &__slide_#{$image} {
       background-image:url("../images/header_slider/#{$image}.jpg");
     }
   }

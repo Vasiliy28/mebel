@@ -27,7 +27,9 @@
     "tether": "^1.4.0"
   },
   "dependencies": {
+    "codemirror": "^5.31.0",
     "font-awesome": "^4.7.0",
-    "scrollpos-styler": "^0.7.0"
+    "scrollpos-styler": "^0.7.0",
+    "summernote": "^0.8.8"
   }
 }

@@ -18,5 +18,6 @@
             event.preventDefault();
             $(this).ekkoLightbox();
         });
+        $('textarea').summernote();
     })
 })(window.jQuery);

@@ -12,10 +12,13 @@
 */
 
 Route::get('/', "HomeController@index")->name("home");
-Route::get('our_work/{type}', "OurWorkController@index")->name("our_work")->where('type', '[A-Za-z]+');
-Route::get('material/{material}', "MaterialController@index")->name("material")->where('material', '[A-Za-z\_]+');
+Route::get('works/{type}', "WorksController@show")->name("works")->where('type', '[A-Za-z]+');
+Route::get('materials/{material}', "MaterialsController@show")->name("materials")->where('material', '[A-Za-z\_]+');
+
+
 
 Route::prefix('admin')->group(function () {
-  Route::get('/', "AdminPanelController@index")->name("admin");
-  Route::get('our_work', "OurWorkController@create")->name('create_our_work');
+  Route::get('/', "AdminController@index")->name("admin");
+  Route::resource('works','WorksController');
+  Route::resource('materials','MaterialsController');
 });

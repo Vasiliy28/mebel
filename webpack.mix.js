@@ -11,11 +11,29 @@ let mix = require('laravel-mix');
  |
  */
 
+mix.setPublicPath('www');
+
 mix.autoload({
     jquery: ['$', 'window.jQuery', 'jQuery'],
     tether: ['window.Tether', 'Tether'],
     'tether-shepherd': ['Shepherd'],
-    'popper.js/dist/umd/popper.js': ['Popper']
+    'popper.js/dist/umd/popper.js': ['Popper'],
+    'summernote/dist/summernote-bs4': ['Summernote']
+    })
+    .webpackConfig(webpack => {
+        return {
+            plugins: [
+                new webpack.DefinePlugin({
+                    "require.specified": "require.resolve"
+                })
+            ],
+            resolve: {
+                alias: {
+                    // summernote: codemirror
+                    'CodeMirror': 'codemirror',
+                }
+            },
+        };
     })
     .js('resources/assets/js/app.js', 'www/js')
     .sass('resources/assets/sass/app.scss', 'www/css')
@@ -28,4 +46,6 @@ mix.autoload({
     .browserSync({
         proxy: 'mebel-dvd.loc'
     })
+    .version()
+    .sourceMaps()
     .disableNotifications();

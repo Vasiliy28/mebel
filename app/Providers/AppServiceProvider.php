@@ -13,7 +13,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+      $nav_items = config('admin.nav_items');
+
+      view()->share('nav_items', $nav_items);
     }
 
     /**
