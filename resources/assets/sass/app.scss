@@ -18,6 +18,7 @@
 @import "home";
 @import "ourwork";
 @import "ekko-lightbox";
+@import "admin_work";
 
 .min-h-100vh{
   min-height: 100vh !important;
@@ -58,7 +59,7 @@
 .bg-teal{
   background-color: $teal !important;
 }
-
+.pointer,
 .btn {
   cursor: pointer;
 }

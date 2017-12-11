@@ -11,6 +11,12 @@ return [
       'route' => 'materials.index',
       'icon_class' => '',
     ],
+    'types_materials' => [
+      'title' => 'Типы Материалов',
+      'route' => 'materials.index',
+      'icon_class' => '',
+    ],
+
 
   ],
 ];

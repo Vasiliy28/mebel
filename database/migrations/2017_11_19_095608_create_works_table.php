@@ -15,10 +15,10 @@ class CreateWorksTable extends Migration
     {
         Schema::create('works', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('slug')->unique();
             $table->string('title');
-            $table->text('description');
-            $table->json('images')->nullable();
+            $table->string('slug')->unique();
+            $table->text('desc');
+            $table->json('image');
             $table->timestamps();
         });
     }

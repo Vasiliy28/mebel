@@ -1,50 +1,31 @@
 @extends('app')
 
 @section('header')
-    <div class="header-slider d-flex">
+    <div class="header-slider  position-relative  d-flex">
         <h1 class="header-slider__title position-absolute offset-2 text-light">
             <span>Мебель в Джанкое</span>
         </h1>
         <div id="headerCarousel" class="carousel slide w-100" data-ride="carousel">
             <ol class="carousel-indicators header-slider__indicators">
-                <li data-target="#headerCarousel" data-slide-to="0" class="active"></li>
-                <li data-target="#headerCarousel" data-slide-to="1"></li>
-                <li data-target="#headerCarousel" data-slide-to="2"></li>
+                @for ($i = 0; $i < count($works); $i++)
+                    <li data-target="#headerCarousel" data-slide-to="{{$i}}" class="{{ !$i ? 'active' : ''  }}"></li>
+                @endfor
             </ol>
             <div class="carousel-inner">
-                <div class="carousel-item header-slider__slide header-slider__slide_kitchen active">
-                    <div class="header-slider__caption offset-2">
-                        <p>Кухни</p>
-                        <a href="{{route('works',['type' => 'kitchens'])}}" class="btn btn-lg mebel-btn-teal"
-                           role="button"
-                           aria-pressed="true">
-                            Фото
-                            <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
-                        </a>
+                @foreach($works as $work)
+                    <div class="carousel-item header-slider__slide {{ !$loop->index ? 'active' : ''}}">
+                        <img src="{{ asset('storage/' . $work->{Works::IMAGE}['full'])  }}" class="d-block w-100" alt="">
+                        <div class="position-absolute header-slider__caption offset-2">
+                            <p>{{ $work->{Works::TITLE} }}</p>
+                            <a href="{{route('works',['type' => $work->slug], TRUE)}}" class="btn btn-lg mebel-btn-teal"
+                               role="button"
+                               aria-pressed="true">
+                                Фото
+                                <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
+                            </a>
+                        </div>
                     </div>
-                </div>
-                <div class="carousel-item header-slider__slide header-slider__slide_bed">
-                    <div class="header-slider__caption offset-2">
-                        <p>Кровати</p>
-                        <a href="{{route('works',['type' => 'beds'], true)}}" class="btn btn-lg mebel-btn-teal"
-                           role="button"
-                           aria-pressed="true">
-                            Фото
-                            <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="carousel-item header-slider__slide header-slider__slide_closet">
-                    <div class="header-slider__caption offset-2">
-                        <p>Шкафы-купе</p>
-                        <a href="{{route('works',['type' => 'wardrobes'], TRUE)}}" class="btn btn-lg mebel-btn-teal"
-                           role="button"
-                           aria-pressed="true">
-                            Фото
-                            <i class="fa fa-angle-right ml-1" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <a class="carousel-control-prev justify-content-start" href="#headerCarousel" role="button"
                data-slide="prev">
@@ -113,22 +94,23 @@
             </div>
         </section>
     @endif
-    @if(isset($data['type_works']))
+    @if(isset($works))
         <section id="ourWork" class="mebels pb-4">
             <div class="container">
                 <h1 class="text-center pt-5 pb-5">Наши Работы</h1>
                 <div class="row">
-                    @foreach($data['type_works'] as $key => $item)
+                    @foreach($works as $key => $work)
                         <div class="col-sm col-md-4">
                             <div class="card mb-4 mebel-card mx-auto rounded-0">
-                                <a href="{{route('works',['type' => $key], FALSE)}}" class="mebel-card__link-image">
-                                    <img class="card-img-top mebel-card__image" src="{{$item['preview']}}"
-                                         alt="Card image cap">
+                                <a href="{{ route('works',['type' => $work->slug]) }}" class="mebel-card__link-image">
+                                    <img class="card-img-top mebel-card__image"
+                                         src="{{ asset('storage/' . $work->{ Works::IMAGE }['thumb']) }}"
+                                         alt="Card image cap"
+                                    >
                                 </a>
                                 <div class="card-body">
                                     <h4 class="card-title m-0 mebel-card__title">
-                                        <a href="{{route('works',['type' => $key])}}"
-                                           class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
+                                        <a href="{{ route('works',['type' => $work->slug]) }}" class="mebel-card__link position-relative text-nowrap">{{ $work->{ Works::TITLE } }}</a>
                                     </h4>
                                 </div>
                             </div>
@@ -138,23 +120,23 @@
             </div>
         </section>
     @endif
-    @if(isset($data['materials']))
+    @if(isset($materials))
         <section id="materials" class="materials pb-4">
             <div class="container">
                 <h1 class="text-center pt-5 pb-5">Материалы</h1>
                 <div class="row">
-                    @foreach($data['materials'] as $key => $item)
+                    @foreach($materials as $key => $material)
                         <div class="col-sm col-md-4">
                             <div class="card mb-4 mebel-card mx-auto rounded-0">
                                 <a href="{{route('materials',['material' => $key], FALSE)}}"
                                    class="mebel-card__link-image">
-                                    <img class="card-img-top mebel-card__image" src="{{$item['preview']}}"
+                                    <img class="card-img-top mebel-card__image" src="{{$material['preview']}}"
                                          alt="Card image cap">
                                 </a>
                                 <div class="card-body">
                                     <h4 class="card-title m-0 mebel-card__title">
                                         <a href="{{route('materials',['material' => $key])}}"
-                                           class="mebel-card__link position-relative text-nowrap">{{$item['title']}}</a>
+                                           class="mebel-card__link position-relative text-nowrap">{{$material['title']}}</a>
                                     </h4>
                                 </div>
                             </div>

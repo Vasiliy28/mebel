@@ -19,7 +19,7 @@
 <body>
 <div class="conteiner-fluid">
     <div class="row no-gutters">
-        <div class="col-2 bg-dark h-100vh">
+        <div class="col-2 bg-dark min-h-100vh">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <ul class="nav navbar-nav navbar-light flex-column">
                     @foreach($nav_items as $item)

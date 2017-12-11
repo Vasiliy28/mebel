@@ -10,6 +10,7 @@ use Intervention\Image\Facades\Image;
 
 class WorksController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +18,7 @@ class WorksController extends Controller
      */
     public function index()
     {
-        return view('admin.works.index');
+        return view('admin.works.index', ['works' => Works::all()]);
     }
 
     /**
@@ -58,7 +59,7 @@ class WorksController extends Controller
         'attributes' => [
           'class' => 'form-control',
           'placeholder' => '',
-          'name' => 'description',
+          'name' => Works::DESC,
         ],
         'label' => [
           'attributes' => [
@@ -68,26 +69,19 @@ class WorksController extends Controller
         ],
       ];
 
-      $images = [
-        'preview' => [
-          'title' => 'Превью',
-          'attributes' => [
-            'class' => 'custom-file-input',
-          ],
+      $main_image = [
+        'attributes' => [
+          'class' => 'form-control-file main-image',
+
         ],
-        'main_image' => [
-          'title' => 'Основная картинка',
+        'label' => [
           'attributes' => [
-            'class' => 'custom-file-input',
+            'class' => 'h4',
           ],
-        ],
-        'page_image' => [
-          'title' => 'Картинка для страницы',
-          'attributes' => [
-            'class' => 'custom-file-input',
-          ],
+          'value' => 'Основная картинка',
         ],
       ];
+
 
       return view('admin.works.create', [
         'model' => new Works(),
@@ -95,7 +89,7 @@ class WorksController extends Controller
         'title' => $title,
         'slug' => $slug,
         'description' => $description,
-        'images' => $images
+        'main_image' => $main_image
       ]);
     }
 
@@ -107,20 +101,85 @@ class WorksController extends Controller
      */
     public function store(Request $request)
     {
-        $fields = $request->file('images');
-        foreach ($fields as $file){
-          $name = $file->getClientOriginalName();
-          $image = Image::make($file)
-            ->resize('1800', NULL, function (Constraint $constraint) {
-              $constraint->aspectRatio();
-              $constraint->upsize();
-            })
-            ->encode($file->getClientOriginalExtension(), 75);
-          $te = Storage::disk('public')->put('./rrr.jpeg', $image,'public');
+      $main_images = [];
+      $examples = $request->file('examples');
+      $new_work = Works::create([
+        Works::TITLE => $request->{Works::TITLE},
+        Works::DESC => $request->{Works::DESC},
+      ]);
+      $slug = $new_work->slug;
+      if($new_work && !empty($slug)){
+        $path = 'works/' . $slug;
+        if (!Storage::disk('public')->exists($path)) {
+          Storage::disk('public')->makeDirectory($path, 0777, TRUE);
+        }
+        $sizes = [
+          'thumb' => [
+            'width' => '300',
+            'quality' => 75
+          ],
+          'full' => [
+            'width' => '1920',
+            'quality' => 100
+          ]
+        ];
+        $file = $request->file(Works::IMAGE);
+        $file_extension = $file->getClientOriginalExtension();
+        $ext = $file->guessClientExtension();
+        if(in_array($ext, ['jpeg', 'jpg', 'png', 'gif'])){
+          foreach ($sizes as $key => $size) {
+            $image = Image::make($file)
+              ->resize($size['width'], NULL, function (Constraint $constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+              })
+              ->encode($file_extension, $size['quality']);
+            $file_name = $slug . '-' . $key;
+            $file_path = $path . '/' . $file_name . '.' . $file_extension;
 
-          $a = 2;
+            if( Storage::disk('public')->put($file_path, $image)){
+              $main_images[$key] = $file_path;
+            }
+          }
+
+          $new_work->{Works::IMAGE} = $main_images;
+          $new_work->save();
+
         }
 
+        if (!empty($examples)) {
+          $example_path = array();
+          $all_examples_path = array();
+          foreach ($examples as $example) {
+            $ext = $example->guessClientExtension();
+            if(in_array($ext, ['jpeg', 'jpg', 'png', 'gif'])){
+              $file_extension = $example->getClientOriginalExtension();
+
+              foreach ($sizes as $key => $size) {
+                $image = Image::make($example)
+                  ->resize($size['width'], NULL, function (Constraint $constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                  })
+                  ->encode($file_extension, $size['quality']);
+                $file_path = $path . '/' . uniqid($slug . '_') . '.' . $file_extension;
+
+                if( Storage::disk('public')->put($file_path, $image)){
+                  $example_path[$key] = $file_path;
+                }
+
+              }
+            }
+
+            $all_examples_path[] = [
+              'path' => $example_path
+            ];
+
+          }
+          $new_work->examples()->createMany($all_examples_path);
+        }
+      }
+      return view('admin.works.index', ['works' => Works::all()]);
 
     }
 
@@ -132,17 +191,17 @@ class WorksController extends Controller
      */
     public function show($type = NULL)
     {
-      $title = $this->getTypeWork($type);
-
-      if (!empty($title)) {
-        $work = array(
-          'menu' => $this->getTypeWork(),
-          'data' => $this->getTypeWork($type),
+      $works = Works::where('slug', $type)->with('examples')->first();
+      $menu = Works::select('title', 'slug')->get();
+      if (!empty($works)) {
+        $data = array(
+          'menu' => $menu,
+          'works' => $works,
         );
-
-        return view('works.show', $work);
+        return view('works.show', $data);
       }
       return redirect()->route('home');
+
     }
 
     /**
@@ -153,7 +212,70 @@ class WorksController extends Controller
      */
     public function edit($id)
     {
-        //
+        $work = Works::where('id', $id)->with('examples')->firstOrFail();
+      $form = [
+        'route' => [
+          'works.update', $id
+        ],
+        'method' => 'PUT',
+        'files' => TRUE,
+      ];
+
+      $title = [
+        'attributes' => [
+          'class' => 'form-control',
+          'placeholder' => '',
+          'name' => 'title',
+        ],
+        'label' => [
+          'attributes' => [
+            'class' => 'h4',
+          ],
+          'value' => 'Название',
+        ],
+      ];
+
+      $slug = [
+        'attributes' => [
+          'hidden'
+        ],
+      ];
+
+      $description = [
+        'attributes' => [
+          'class' => 'form-control',
+          'placeholder' => '',
+          'name' => Works::DESC,
+        ],
+        'label' => [
+          'attributes' => [
+            'class' => 'h4',
+          ],
+          'value' => 'Описание',
+        ],
+      ];
+
+      $main_image = [
+        'attributes' => [
+          'class' => 'form-control-file main-image',
+
+        ],
+        'label' => [
+          'attributes' => [
+            'class' => 'h4',
+          ],
+          'value' => 'Основная картинка',
+        ],
+      ];
+
+      return view('admin.works.create', [
+        'model' => $work,
+        'form' => $form,
+        'title' => $title,
+        'slug' => $slug,
+        'description' => $description,
+        'main_image' => $main_image
+      ]);
     }
 
     /**
@@ -165,7 +287,93 @@ class WorksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      Works::where('id', $id)->update([
+        Works::TITLE => $request->{Works::TITLE},
+        Works::DESC => $request->{Works::DESC}
+      ]);
+      if (isset($request->{Works::IMAGE}) || isset($request->{Works::EXAMPLES})) {
+        $main_image = array();
+        $work = Works::findOrFail($id);
+        $slug = $work->slug;
+        $path = 'works/' . $slug;
+        $sizes = [
+          'thumb' => [
+            'width' => '300',
+            'quality' => 75,
+          ],
+          'full' => [
+            'width' => '1920',
+            'quality' => 100,
+          ],
+        ];
+        if(isset($request->{Works::IMAGE})){
+          foreach ($work->{Works::IMAGE} as $path) {
+            if (Storage::disk('public')->exists($path)) {
+              Storage::disk('public')->delete($path);
+            }
+          }
+          if (!Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->makeDirectory($path, 0777, TRUE);
+          }
+          $file = $request->file(Works::IMAGE);
+          $file_extension = $file->getClientOriginalExtension();
+          $ext = $file->guessClientExtension();
+          if (in_array($ext, ['jpeg', 'jpg', 'png', 'gif'])) {
+            foreach ($sizes as $key => $size) {
+              $image = Image::make($file)
+                ->resize($size['width'], NULL, function (Constraint $constraint) {
+                  $constraint->aspectRatio();
+                  $constraint->upsize();
+                })
+                ->encode($file_extension, $size['quality']);
+              $file_name = $slug . '-' . $key;
+              $file_path = $path . '/' . $file_name . '.' . $file_extension;
+
+              if (Storage::disk('public')->put($file_path, $image)) {
+                $main_image[$key] = $file_path;
+              }
+            }
+
+            $work->{Works::IMAGE} = $main_image;
+
+          }
+        }
+        if (isset($request->{Works::EXAMPLES})) {
+          $example_path = [];
+          $all_examples_path = [];
+          $examples = $request->file(Works::EXAMPLES);
+          foreach ($examples as $example) {
+            $ext = $example->guessClientExtension();
+            if (in_array($ext, ['jpeg', 'jpg', 'png', 'gif'])) {
+              $file_extension = $example->getClientOriginalExtension();
+
+              foreach ($sizes as $key => $size) {
+                $image = Image::make($example)
+                  ->resize($size['width'], NULL, function (Constraint $constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                  })
+                  ->encode($file_extension, $size['quality']);
+                $file_path = $path . '/' . uniqid($slug . '_') . '.' . $file_extension;
+
+                if (Storage::disk('public')->put($file_path, $image)) {
+                  $example_path[$key] = $file_path;
+                }
+
+              }
+            }
+
+            $all_examples_path[] = [
+              'path' => $example_path,
+            ];
+
+          }
+          $work->examples()->createMany($all_examples_path);
+        }
+
+      }
+
+      return view('admin.works.index', ['works' => Works::all()]);
     }
 
     /**
@@ -176,6 +384,8 @@ class WorksController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $work = Works::find($id);
+      $work->delete();
+      return view('admin.works.index', ['works' => Works::all()]);
     }
 }

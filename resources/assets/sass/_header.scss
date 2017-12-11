@@ -1,4 +1,3 @@
-$images: bed kitchen closet;
 .header-menu {
   padding: 0;
   &.sps {
@@ -32,14 +31,10 @@ $images: bed kitchen closet;
 }
 
 .header-slider {
-  position: relative;
   &__slide {
     height: 100vh;
-    background: no-repeat center center fixed;
-    background-size: cover;
   }
   &__caption {
-    position: absolute;
     bottom: 24%;
     background: rgba($gray-700, 0.7);
     padding: 0.7rem 3rem 1rem 0.7rem;
@@ -75,11 +70,6 @@ $images: bed kitchen closet;
       &:hover{
         background: $teal;
       }
-    }
-  }
-  @each $image in $images {
-    &__slide_#{$image} {
-      background-image:url("../images/header_slider/#{$image}.jpg");
     }
   }
 }

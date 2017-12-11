@@ -12,8 +12,8 @@
 */
 
 Route::get('/', "HomeController@index")->name("home");
-Route::get('works/{type}', "WorksController@show")->name("works")->where('type', '[A-Za-z]+');
-Route::get('materials/{material}', "MaterialsController@show")->name("materials")->where('material', '[A-Za-z\_]+');
+Route::get('works/{type}', "WorksController@show")->name("works")->where('type', '[A-Za-z\_-]+');
+Route::get('materials/{material}', "MaterialsController@show")->name("materials")->where('material', '[A-Za-z\_-]+');
 
 
 
@@ -21,4 +21,5 @@ Route::prefix('admin')->group(function () {
   Route::get('/', "AdminController@index")->name("admin");
   Route::resource('works','WorksController');
   Route::resource('materials','MaterialsController');
+  Route::resource('examples','ExamplesController');
 });

@@ -15,7 +15,8 @@ try {
     require('scrollpos-styler');
     require('bootstrap');
     require('./ekko-lightbox');
-    require('summernote/dist/summernote-bs4')
+    require('summernote/dist/summernote-bs4');
+    //require( 'datatables.net-bs4' )();
 } catch (e) {}
 
 /**

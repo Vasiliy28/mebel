@@ -18,8 +18,7 @@ mix.autoload({
     tether: ['window.Tether', 'Tether'],
     'tether-shepherd': ['Shepherd'],
     'popper.js/dist/umd/popper.js': ['Popper'],
-    'summernote/dist/summernote-bs4': ['Summernote']
-    })
+ })
     .webpackConfig(webpack => {
         return {
             plugins: [
@@ -29,7 +28,6 @@ mix.autoload({
             ],
             resolve: {
                 alias: {
-                    // summernote: codemirror
                     'CodeMirror': 'codemirror',
                 }
             },
