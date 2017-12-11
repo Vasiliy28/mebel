@@ -11,6 +11,7 @@ npm-debug.log
 yarn-error.log
 .env
 
-public/css
-public/js
-public/fonts
+www/css
+www/js
+www/fonts
+www/storage
